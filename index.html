@@ -1,31 +1,36 @@
 <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Rock 'n' Roll Trivia</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="assets/css/style.css">
+    </head>
 
-<html lang="en-us">
-
-<head>
-<meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-<link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <title>Rock 'n' Roll Trivia</title>
-</head>
-
-<body>
-    <div id="innerbox">Rock 'n' Roll Trivia</div>
-    <div id="outerbox">
-        <div class="timer"></div>
-        <div class ="answers"></div>
-        <button id="startbutton"></button>
-        <div id="finalscore"></div>
-        <button id="resetbutton"></button>
+  <body>
+  
+   
+    <div class="container">
+        <div class="jumbotron">
+            <div id="game">
+            <h1>Rock 'n' Roll Trivia</h1>
+            <h2 id="remaining-time" class="lead">Remaining Time: <span id="timer"></span></h2>
+            <p id="question" class="lead"></p>
+            <div id="results">
+        </div>
     </div>
 
+      <div class="row">
+        <div id="choices" class="text-center">
+          <button id="begin" class="btn btn-info btn-lg">Start Game</button>
+          <div id="options">
+      </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="assets/javascript/app.js"></script>
+    </div> 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/javascript/app.js"></script>  
 
 
-
-</body>
-
+  </body>
 </html>
-

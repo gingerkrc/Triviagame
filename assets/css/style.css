@@ -1,46 +1,23 @@
-body {
-    background-image: url("../images/guitars.jpg");
+body{
+	background-image: url(https://png2.kisspng.com/sh/dbe2b323234e0df368656e2f7d88bfff/L0KzQYm3U8E1N5dBj5H0aYP2gLBuTfFkd6Z4jNtsLXf4ecXokr1mdJZojORyYz3qhbr7ggIue5lmiNc2Z4XshLL5TfluaZhqi595aXP3hcPsk702aZIAT9ZsZkC4dbXoWL4zOmE4UaUCM0G4QoK3VcczO2I1SqY8LoDxd1==/kisspng-acoustic-guitar-electric-guitar-shape-guitar-images-pictures-5aa97dcf05eda8.2203937315210572310243.png);
+	text-align: center;
+}
+h1, h2, #question, #results{
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-#outerbox {
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    font-size: 18px;
-    color: black;
-    background-color: lightslategray;
-    padding: 25px;
-    margin: 10px;
-    text-align: center;
+.last-seconds{
+  color: red;
 }
-
-#innerbox {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 50px;
-    font-weight: bold;
-    color: black;
+.option{
+  margin: 15px;
+}
+.container {
     background-color: red;
-    padding: 25px;
-    margin: 10px;
-    text-align: center;
-
 }
-
-.timer {
-    padding-bottom: 15px;
+.jumbotron {
+    background-color: white;
 }
-
-button {
-    background-color: lightseagreen;
-    border: none;
-    color: black;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 18px;
-    margin: 4px 2px;
-    cursor: pointer;
+.btn {
+    background-color: red;
 }
-
-
-

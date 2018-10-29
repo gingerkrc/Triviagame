@@ -1,159 +1,195 @@
-// Global variables
+$(document).ready(function(){
+        
+	// event listeners
+	 $("#remaining-time").hide();
+	 $("#begin").on("click", triviaGame.startGame);
+	 $(document).on("click" , ".option", triviaGame.guessChecker);
 
-var questionArray = ["What is the name of the drummer of Z.Z. Top?", "Who originally recorded the song 'Hound Dog'?", "Which color of M&Ms did Van Halen request to be left out in their rider?", "Which of these performers played in the band The Runaways?", "What was the name of Henry Rollins' first band?", "What is James Osterberg Jr. more commonly known as?"];
-var answersArray = [["Bill Stevenson", "Vincent Furnier", "Frank Beard", "Neil Peart"], ["Freddie Bell and the Bellboys", "Big Mama Thornton", "Elvis Presley", "Chubby Checker"], ["Green","Red","Brown","Yellow"], ["Nancy Wilson", "Madonna", "Joan Jett", "Aimee Mann"], ["Black Flag", "Minor Threat", "Swiz", "State of Alert"], ["Alice Cooper", "Iggy Pop", "Buster Poindexter", "Nikki Sixx"]];
-var imageArray = ["<img src='assets/images/zztop.jpg'>", "<img src='assets/images/HoundDog.jpg'>", "<img src='assets/images/VanHalenRider.jpg'>", "<img src='assets/images/runaways.jpg'>",  "<img src='assets/images/soa.jpg'>", "<img src='assets/images/iggypop.jpg'>"];
-var correctAnswers = ["c. Frank Beard", "b. Big Mama Thornton", "c. Brown", "c. Joan Jett", "d. State of Alert", "b. Iggy Pop"];
-var infoArray = ["Frank Beard is the drummer for Z.Z. Top. Ironically he is the only member of the group who doesn't have a beard.", "'Hound Dog' was originally recorded by Willie Mae 'Big Mama' Thornton on August 13, 1952 and was written by Jerry Leiber and Mike Stoller. Elvis Presley did not record the song until July 13, 1956.",
-                   "The band has said that the M&M provision was included to make sure that promoters had read through all of the specific details of their rider.", " Before leading Joan Jett and the Blackhearts, Joan Jett played rhythm guitar for The Runaways. She was a founding member when the band formed in 1975 and was 17 at the time.", 
-                   "Henry Rollins fronted D.C. hardcore punk band State of Alert from 1980 - 1981 before becoming the permanent vocalist for Black Flag in 1981.", "James Osterberg was nicknamed ‘Iggy’ in reference to the first band he drummed for, the Iguanas. The name ‘Pop’ was given after the Stooges were formed in reference to a local Ann Arbor character whom he resembled. Osterberg officially began using the stage name Iggy Pop after attending an MC5 concert in Ann Arbor."]
-var questionCounter = 0;
-var selectAnswer;
-var counter = 20;
-var theCountdown;
-var correctGuess = 0;
-var incorrectGuess = 0;
-var unansweredGuess = 0;
+  })
+	 
+var triviaGame = {
+  correct: 0,
+  incorrect: 0,
+  unanswered: 0,
+  currentSet: 0,
+  timer: 10,
+  timerOn: false,
+  timerId : "",
 
-// Create a function that creates a start button 
-function start() {
-	var startGame = "Click Here to Start";
-	$("#startbutton").html(startGame);
-	$("#resetbutton").remove();
-    
-}
+  // questions  and answers data object
+  questions: {
+	q1: "What is the name of the drummer of Z.Z. Top?",
+	q2: "Who originally recorded the song 'Hound Dog'?",
+	q3: "Which color of M&Ms did Van Halen request to be left out in their rider?",
+	q4: "Which of these performers played in the band The Runaways?",
+	q5: "What was the name of Henry Rollins' first band?",
+	q6: "What is James Osterberg Jr. more commonly known as?"
+  },
 
-// Reset functions
-function reset() {
-    questionCounter = 0;
-	correctGuess = 0;
-	incorrectGuess = 0;
-	unansweredGuess = 0;
-	counter = 20;
-	createHTML();
-	timer();
-}
+  selections: {
+	q1: ["Bill Stevenson", "Vincent Furnier", "Frank Beard", "Neil Peart"],
+	q2: ["Freddie Bell and the Bellboys", "Big Mama Thornton", "Elvis Presley", "Chubby Checker"],
+	q3: ["Green","Red","Brown","Yellow"],
+	q4: ["Nancy Wilson", "Madonna", "Joan Jett", "Aimee Mann"],
+	q5: ["Black Flag", "Minor Threat", "Swiz", "State of Alert"],
+	q6: ["Alice Cooper", "Iggy Pop", "Buster Poindexter", "Nikki Sixx"]
+  },
 
-// Call the start function
-start();
+  answers: {
+	q1: "Frank Beard",
+	q2: "Big Mama Thornton",
+	q3: "Brown",
+	q4: "Joan Jett",
+	q5: "State of Alert",
+	q6: "Iggy Pop"
+  },
+
+  info: {
+	  q1: "Frank Beard is the drummer for Z.Z. Top. Ironically he is the only member of the group who doesn't have a beard.",
+	  q2: "'Hound Dog' was originally recorded by Willie Mae 'Big Mama' Thornton on August 13, 1952 and was written by Jerry Leiber and Mike Stoller. Elvis Presley did not record the song until July 13, 1956.",
+	  q3: "The band has said that the M&M provision was included to make sure that promoters had read through all of the specific details of their rider.",
+	  q4: "Before leading Joan Jett and the Blackhearts, Joan Jett played rhythm guitar for The Runaways. She was a founding member when the band formed in 1975 and was 17 at the time.",
+	  q5: "Henry Rollins fronted D.C. hardcore punk band State of Alert from 1980 - 1981 before becoming the permanent vocalist for Black Flag in 1981.", 
+	  q6: "James Osterberg was nicknamed ‘Iggy’ in reference to the first band he drummed for, the Iguanas. The name ‘Pop’ was given after the Stooges were formed in reference to a local Ann Arbor character whom he resembled. Osterberg officially began using the stage name Iggy Pop after attending an MC5 concert in Ann Arbor."
+	},
 
 
-//Create a click event to generate the HTML of the question and answers
-$(document).on("click", "#startbutton", function(event){
-    event.preventDefault();  
-	createHTML();
-	timer();
-	$("#startbutton").remove();
-	$("#resetbutton").remove();
+  images: {
+	  q1: "<img src='assets/images/zztop.jpg'>",
+	  q2: "<img src='assets/images/HoundDog.jpg'>",
+	  q3: "<img src='assets/images/VanHalenRider.jpg'>",
+	  q4: "<img src='assets/images/runaways.jpg'>",
+	  q5: "<img src='assets/images/soa.jpg'>",
+	  q6: "<img src='assets/images/iggypop.jpg'>",
+	},
+
+  // start game
+  startGame: function(){
+	// restart game results
+	triviaGame.currentSet = 0;
+	triviaGame.correct = 0;
+	triviaGame.incorrect = 0;
+	triviaGame.unanswered = 0;
+	clearInterval(triviaGame.timerId);
 	
-
-}); 
-
-// Generate questions and answer selections
-function createHTML() {
-	var gameText = questionArray[questionCounter] + "<br><button>a. " + answersArray[questionCounter][0] + "</button><br><button>b. " + answersArray[questionCounter][1] + "</button><br><button>c. " + answersArray[questionCounter][2]+ "</button><br><button>d. " + answersArray[questionCounter][3] + "</button><br>";
-	document.querySelector("button");
-	$(".answers").html(gameText); 
+	// show game section
+	$("#game").show();
 	
-
-};
+	//  empty results
+	$("#results").html("");
 	
-// Add to unansweredGuess when time runs out
-// Display text, info text, and image
-function createTimeOutLoss() {
-	unansweredGuess++;
-	var unansweredGameText = "<br><p>Out of time!  The answer is: " + correctAnswers[questionCounter] + "<br></p>" + infoArray[questionCounter] + "<br>" + imageArray[questionCounter];
-	$(".answers").html(unansweredGameText);
-	setTimeout(wait, 8000); 
-}
-
-// Add to correctGuess when answer is correct
-// Display text, info text, and image
-function addWin() {
-	correctGuess++;
-	var correctGameText = "<br><p>Correct. The answer is: " + correctAnswers[questionCounter] + "<br></p>" + infoArray[questionCounter] + "<br>" + imageArray[questionCounter];
-	$(".answers").html(correctGameText);
-	setTimeout(wait, 8000);  
+	// show timer
+	$("#timer").text(triviaGame.timer);
 	
-}
+	// remove begin button
+	$("#begin").hide();
 
-// Add to incorrectGuess when answer is incorrect
-// Display text, info text, and image
-function addLoss() {
-	incorrectGuess++;
-	var incorrectGameText = "<br><p>Incorrect. The answer is: "+ correctAnswers[questionCounter] + "<br></p>" + infoArray[questionCounter] + "<br>" +  imageArray[questionCounter];
-    $(".answers").html(incorrectGameText);
-	setTimeout(wait, 8000); 
-}
-
-// Delay between questions
-function wait() {
-	if (questionCounter < 6) {
-	questionCounter++;
-	createHTML();
-	counter = 20;
-	timer();
+	$("#remaining-time").show();
+  
+	triviaGame.nextQuestion();
+	
+  },
+  // method to loop through and display questions and selections 
+  nextQuestion : function(){
+	
+	// set timer to 10 seconds each question
+	triviaGame.timer = 10;
+	 $("#timer").removeClass("last-seconds");
+	$("#timer").text(triviaGame.timer);
+	
+	// prevent timer speed up
+	if(!triviaGame.timerOn){
+	  triviaGame.timerId = setInterval(triviaGame.timerRun, 1000);
 	}
-	else {
-		finalScore();
+	
+	  // gets all the questions then indexes the current questions
+	  var questionContent = Object.values(triviaGame.questions)[triviaGame.currentSet];
+	  $("#question").text(questionContent);
+
+	  var questionSelections = Object.values(triviaGame.selections)[triviaGame.currentSet];
+	  
+	  $.each(questionSelections, function(index, key){
+		$("#options").append($('<button class="option btn btn-info btn-lg">' + key + '</button>'));
+	  })
+	  
+	},
+
+  // method to decrement counter and count unanswered if timer runs out
+  timerRun : function(){
+	// if timer still has time left and there are still questions left to ask
+	if(triviaGame.timer > -1 && triviaGame.currentSet < Object.keys(triviaGame.questions).length){
+	  $("#timer").text(triviaGame.timer);
+	  triviaGame.timer--;
 	}
+	// the time has run out and question isn't answered
+	else if(triviaGame.timer === -1){
+	  triviaGame.unanswered++;
+	  triviaGame.result = false;
+	  clearInterval(triviaGame.timerId);
+	  resultId = setTimeout(triviaGame.guessResult, 8000);
+	  $("#results").html("<h3>Out of time! The answer was "  + Object.values(triviaGame.answers)[triviaGame.currentSet] 
+	  + "<br>" + Object.values(triviaGame.info)[triviaGame.currentSet] 
+	  + "<br>" + Object.values(triviaGame.images)[triviaGame.currentSet] + "</h3>");
+	  
+	}
+	// if all the questions have been shown end the game, show results
+	else if(triviaGame.currentSet === Object.keys(triviaGame.questions).length){
+	  
+	  $("#results").html("<h3>Thank you for playing!</h3>"
+	  + "<p>Correct: "+ triviaGame.correct +"</p>"
+	  + "<p>Incorrect: "+ triviaGame.incorrect +"</p>"
+	  + "<p>Unaswered: "+ triviaGame.unanswered +"</p>");
+	  
+	  // hide game section
+	  $("#question").hide();
+	  $("#remaining-time").hide();
+	  
+	  // show start button to begin a new game
+	  $("#begin").show();
+	}
+	
+  },
+  guessChecker : function() {
+	var resultId;
+	// the answer to the current question
+	var currentAnswer = Object.values(triviaGame.answers)[triviaGame.currentSet];
+	// if option text = correct answer, add correct
+	if($(this).text() === currentAnswer){
+	  
+	  $(this).addClass("btn-success").removeClass("btn-info");
+	  
+	  triviaGame.correct++;
+	  clearInterval(triviaGame.timerId);
+	  resultId = setTimeout(triviaGame.guessResult, 8000);
+	  $("#results").html("<h3>Correct!"
+	  + "<br>" + Object.values(triviaGame.info)[triviaGame.currentSet] 
+	  + "<br>" + Object.values(triviaGame.images)[triviaGame.currentSet] + "</h3>");
+	}
+
+	// else user picks wrong answer, add incorrect
+	else{
+	  $(this).addClass("btn-danger").removeClass("btn-info");
+	  triviaGame.incorrect++;
+	  clearInterval(triviaGame.timerId);
+	  resultId = setTimeout(triviaGame.guessResult, 8000);
+	  $("#results").html("<h3>Nope!" 
+	  + "<br>" + Object.values(triviaGame.info)[triviaGame.currentSet] 
+	  + "<br>" + Object.values(triviaGame.images)[triviaGame.currentSet] + "</h3>");
+	}
+	
+  },
+  // method to remove previous question results and 
+  guessResult : function(){
+	
+	// go to next question set
+	triviaGame.currentSet++;
+	
+	$(".option").remove();
+	$("#results h3").remove();
+	
+	// begin next question
+	triviaGame.nextQuestion();
+	 
+  }
+
 }
-
-// Create click events for each answer
-$(document).on("click", ".answers", function(event){
-	var selectAnswer = $(this).text();
-	if(selectAnswer === correctAnswers[questionCounter]) {
-		addWin();
-		// clearInterval(clock);
-		clearInterval(theCountdown);
-		// theCountdown = setInterval(deccrement, 1000);
-      	// clock = setInterval(decrement, 1000);
-	}
-	else {
-		// clearInterval(clock);
-		clearInterval(theCountdown)
-		addLoss();
-	}
-}); 
-
-// Set timer interval
-function timer() {
-	var theCountdown = setInterval(twentySeconds, 1000);
-	function twentySeconds() {
-		if (counter === 0) {
-			createTimeOutLoss();
-			clearInterval(theCountdown);
-			
-		}
-		if (counter > 0) {
-			counter--;
-		}
-		$(".timer").html("Time Remaining: " + counter);
-	}
-}
-
-// Display final score page at end of game
-function finalScore() {
-	var finalGameText = "<p>Here's how you did:" + "</p>" + "<p>Correct Answers: " + correctGuess + "</p>" + "<p>Incorrect Answers: " + incorrectGuess + "</p>" + "<p>Unanswered: " + unansweredGuess + "</p>" + "<p>Reset The Game</p>";
-	$(document).html(finalGameText);
-	$("#resetbutton").html(finalGameText);
-}
-
-// Create click event to reset game
-	// var resetButton= "Reset Game";
-	$("#resetbutton").text("Reset Game");
-	$("#resetbutton").on("click", function(event){
-	reset();
-	// clearInterval(clock);
-	clearInterval(theCountdown);
-	// clock = setInterval(decrement, 1000);
-	// theCountdown = setInterval(decrement, 1000);
-
-});
-
-
-
-
-
-
-
