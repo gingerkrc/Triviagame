@@ -50,7 +50,7 @@ var triviaGame = {
 	  q3: "The band has said that the M&M provision was included to make sure that promoters had read through all of the specific details of their rider.",
 	  q4: "Before leading Joan Jett and the Blackhearts, Joan Jett played rhythm guitar for The Runaways. She was a founding member when the band formed in 1975 and was 17 at the time.",
 	  q5: "Henry Rollins fronted D.C. hardcore punk band State of Alert from 1980 - 1981 before becoming the permanent vocalist for Black Flag in 1981.", 
-	  q6: "James Osterberg was nicknamed ‘Iggy’ in reference to the first band he drummed for, the Iguanas. The name ‘Pop’ was given after the Stooges were formed in reference to a local Ann Arbor character whom he resembled. Osterberg officially began using the stage name Iggy Pop after attending an MC5 concert in Ann Arbor."
+	  q6: "James Osterberg was nicknamed ‘Iggy’ in reference to the first band he drummed for, the Iguanas."
 	},
 
 
